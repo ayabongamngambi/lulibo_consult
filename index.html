@@ -1,0 +1,1471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lulibo Consult | Smart Web Systems &amp; Bookkeeping</title>
+  <meta name="description" content="Professional web design and financial record upkeep for modern businesses. From R500 sites with custom emails to hospitality systems. Based in South Africa.">
+  <meta name="keywords" content="Website Design, Financial Records, Bookkeeping, SARS, CIPC, Hospitality Systems, Lulibo Consult, South Africa, AI automation, bots, Lulibo">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&family=Inter:wght@900&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+
+  <style>
+    /* =========================================================
+       TOKENS
+    ========================================================= */
+    :root {
+      --ink:        #0A0F1E;
+      --ink-2:      #111827;
+      --ink-3:      #1E2535;
+      --rule:       rgba(255,255,255,0.07);
+      --rule-mid:   rgba(255,255,255,0.12);
+      --rule-light: rgba(255,255,255,0.22);
+      --sky:        #B9D9EB;
+      --sky-dim:    rgba(185,217,235,0.12);
+      --sky-border: rgba(185,217,235,0.28);
+      --gold:       #E2C97E;
+      --gold-dim:   rgba(226,201,126,0.1);
+      --muted:      rgba(255,255,255,0.42);
+      --soft:       rgba(255,255,255,0.7);
+      --font-main:  'Plus Jakarta Sans', sans-serif;
+      --font-mono:  'DM Mono', monospace;
+      --radius-sm:  6px;
+      --radius-md:  12px;
+      --radius-lg:  20px;
+    }
+
+    /* =========================================================
+       BASE
+    ========================================================= */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-main);
+      background: var(--ink);
+      color: #fff;
+      overflow-x: hidden;
+      line-height: 1.65;
+    }
+
+    ::selection { background: var(--sky); color: var(--ink); }
+
+    a { text-decoration: none; color: inherit; }
+
+    /* =========================================================
+       BACKGROUND — subtle grid, no hexagons
+    ========================================================= */
+    .page-grid {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      background-image:
+        linear-gradient(var(--rule) 1px, transparent 1px),
+        linear-gradient(90deg, var(--rule) 1px, transparent 1px);
+      background-size: 64px 64px;
+      pointer-events: none;
+    }
+
+    /* Subtle vignette on the page */
+    .page-vignette {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      background: radial-gradient(ellipse at 60% 0%, rgba(185,217,235,0.06) 0%, transparent 60%),
+                  radial-gradient(ellipse at 0% 100%, rgba(226,201,126,0.04) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    /* =========================================================
+       NAVIGATION
+    ========================================================= */
+    .site-nav {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(10,15,30,0.85);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--rule);
+      padding: 0 5%;
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 68px;
+    }
+
+    .logo {
+      font-family: 'Inter', sans-serif;
+      font-weight: 900;
+      font-size: 1.5rem;
+      letter-spacing: -1px;
+      color: #fff;
+      text-decoration: none;
+    }
+    .logo span { color: var(--sky); }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 0.875rem;
+      color: var(--muted);
+      transition: color 0.2s;
+      font-weight: 500;
+    }
+    .nav-links a:hover { color: #fff; }
+
+    .nav-cta {
+      background: var(--sky);
+      color: var(--ink) !important;
+      font-weight: 700 !important;
+      font-size: 0.85rem !important;
+      padding: 9px 22px;
+      border-radius: var(--radius-sm);
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .nav-cta:hover { opacity: 0.85; transform: translateY(-1px); color: var(--ink) !important; }
+
+    /* Mobile nav toggle */
+    .nav-toggle {
+      display: none;
+      background: none;
+      border: 1px solid var(--rule-mid);
+      border-radius: var(--radius-sm);
+      width: 40px;
+      height: 40px;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 1.1rem;
+      cursor: pointer;
+    }
+
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      inset: 68px 0 0;
+      background: var(--ink-2);
+      z-index: 999;
+      flex-direction: column;
+      padding: 32px 5%;
+      gap: 8px;
+      border-top: 1px solid var(--rule);
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--soft);
+      padding: 12px 0;
+      border-bottom: 1px solid var(--rule);
+    }
+    .mobile-menu a:last-child { border-bottom: none; }
+
+    /* =========================================================
+       HERO SPLIT LAYOUT
+    ========================================================= */
+    .hero {
+      padding: 100px 5% 80px;
+      min-height: calc(100vh - 68px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .hero-split {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .hero-image-col {
+      position: relative;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .hero-img-frame {
+      width: 100%;
+      border-radius: 24px;
+      border: 1px solid var(--sky-border);
+      box-shadow: 0 0 60px rgba(185,217,235,0.12);
+      display: block;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-16px); }
+    }
+
+    @media (max-width: 900px) {
+      .hero-split { grid-template-columns: 1fr; }
+      .hero-image-col { display: none; }
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--sky);
+      margin-bottom: 28px;
+    }
+    .hero-eyebrow::before {
+      content: '';
+      width: 24px;
+      height: 1px;
+      background: var(--sky);
+      flex-shrink: 0;
+    }
+
+    .hero-headline {
+      font-size: clamp(2.8rem, 6vw, 5rem);
+      font-weight: 800;
+      line-height: 1.06;
+      letter-spacing: -0.025em;
+      margin-bottom: 28px;
+      max-width: 780px;
+    }
+
+    .hero-headline .hl-sky {
+      color: var(--sky);
+    }
+    .hero-headline .hl-underline {
+      position: relative;
+      display: inline-block;
+    }
+    .hero-headline .hl-underline::after {
+      content: '';
+      position: absolute;
+      bottom: 4px;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--gold);
+      border-radius: 2px;
+    }
+
+    .hero-sub {
+      font-size: 1.1rem;
+      color: var(--muted);
+      max-width: 560px;
+      margin-bottom: 44px;
+      line-height: 1.75;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 72px;
+    }
+
+    .btn-primary {
+      background: var(--sky);
+      color: var(--ink);
+      font-weight: 700;
+      font-size: 0.9rem;
+      padding: 14px 28px;
+      border-radius: var(--radius-sm);
+      border: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: opacity 0.2s, transform 0.2s;
+      cursor: pointer;
+    }
+    .btn-primary:hover { opacity: 0.88; transform: translateY(-2px); color: var(--ink); }
+
+    .btn-secondary {
+      background: transparent;
+      color: #fff;
+      font-weight: 600;
+      font-size: 0.9rem;
+      padding: 13px 28px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--rule-light);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .btn-secondary:hover {
+      border-color: rgba(255,255,255,0.4);
+      background: rgba(255,255,255,0.04);
+      color: #fff;
+    }
+
+    /* Trust bar */
+    .trust-bar {
+      display: flex;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+    .trust-item {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .trust-item .t-num {
+      font-family: var(--font-mono);
+      font-size: 1.6rem;
+      font-weight: 500;
+      color: var(--sky);
+      line-height: 1;
+    }
+    .trust-item .t-label {
+      font-size: 0.75rem;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .trust-divider {
+      width: 1px;
+      background: var(--rule-mid);
+      align-self: stretch;
+    }
+
+    /* =========================================================
+       SECTION SHARED
+    ========================================================= */
+    section { padding: 100px 5%; }
+
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--sky);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .section-label::before {
+      content: '';
+      width: 20px;
+      height: 1px;
+      background: var(--sky);
+    }
+
+    .section-heading {
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      margin-bottom: 16px;
+    }
+
+    .section-sub {
+      font-size: 1rem;
+      color: var(--muted);
+      max-width: 520px;
+      line-height: 1.8;
+    }
+
+    /* =========================================================
+       SERVICES SECTION
+    ========================================================= */
+    #services { background: var(--ink-2); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+
+    .services-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 40px;
+      margin-bottom: 64px;
+    }
+
+    /* Service cards */
+    .service-card {
+      background: var(--ink);
+      border: 1px solid var(--rule-mid);
+      border-radius: var(--radius-lg);
+      padding: 40px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.3s;
+      height: 100%;
+    }
+    .service-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--sky);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .service-card:hover { border-color: var(--sky-border); }
+    .service-card:hover::before { transform: scaleX(1); }
+
+    .service-card.featured {
+      border-color: var(--sky-border);
+      background: linear-gradient(160deg, rgba(185,217,235,0.06) 0%, var(--ink) 60%);
+    }
+    .service-card.featured::before { transform: scaleX(1); background: linear-gradient(90deg, var(--sky), var(--gold)); }
+
+    .service-icon {
+      width: 48px;
+      height: 48px;
+      background: var(--sky-dim);
+      border: 1px solid var(--sky-border);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      color: var(--sky);
+      margin-bottom: 24px;
+    }
+
+    .service-card .featured-badge {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: var(--gold);
+      color: #1a1000;
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 100px;
+    }
+
+    .service-price {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 4px;
+      margin-bottom: 12px;
+    }
+    .service-price .amount {
+      font-family: var(--font-mono);
+      font-size: 1.9rem;
+      font-weight: 500;
+      color: #fff;
+      line-height: 1;
+    }
+    .service-price .suffix {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .service-card h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: #fff;
+    }
+
+    .service-card p {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.75;
+      margin-bottom: 28px;
+    }
+
+    /* What's included — step list */
+    .step-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      border-top: 1px solid var(--rule);
+      padding-top: 24px;
+    }
+    .step-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--rule);
+      font-size: 0.875rem;
+      color: var(--soft);
+    }
+    .step-list li:last-child { border-bottom: none; }
+
+    .step-num {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      font-weight: 500;
+      color: var(--sky);
+      background: var(--sky-dim);
+      border: 1px solid var(--sky-border);
+      border-radius: 3px;
+      width: 22px;
+      height: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .step-check {
+      color: var(--sky);
+      font-size: 0.85rem;
+      flex-shrink: 0;
+      margin-top: 3px;
+    }
+
+    /* =========================================================
+       HOW IT WORKS
+    ========================================================= */
+    #process { background: var(--ink); }
+
+    .process-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      margin-top: 64px;
+      border: 1px solid var(--rule-mid);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+
+    .process-step {
+      padding: 36px 32px;
+      border-right: 1px solid var(--rule-mid);
+      position: relative;
+    }
+    .process-step:last-child { border-right: none; }
+
+    .process-step .p-num {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      font-weight: 500;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      margin-bottom: 20px;
+    }
+
+    .process-icon {
+      width: 44px;
+      height: 44px;
+      background: var(--sky-dim);
+      border: 1px solid var(--sky-border);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      color: var(--sky);
+      margin-bottom: 20px;
+    }
+
+    .process-step h4 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    .process-step p {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    /* Arrow connector */
+    .process-step::after {
+      content: '→';
+      position: absolute;
+      right: -12px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 0.8rem;
+      color: var(--muted);
+      z-index: 1;
+    }
+    .process-step:last-child::after { display: none; }
+
+    /* =========================================================
+       SOCIAL PROOF / NUMBERS
+    ========================================================= */
+    #social-proof {
+      background: var(--ink-2);
+      border-top: 1px solid var(--rule);
+      border-bottom: 1px solid var(--rule);
+      padding: 80px 5%;
+    }
+
+    .proof-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--rule-mid);
+      border: 1px solid var(--rule-mid);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+
+    .proof-cell {
+      background: var(--ink-2);
+      padding: 44px 36px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .proof-cell .p-stat {
+      font-family: var(--font-mono);
+      font-size: 2.4rem;
+      font-weight: 500;
+      color: var(--sky);
+      line-height: 1;
+    }
+    .proof-cell .p-label {
+      font-size: 0.9rem;
+      color: #fff;
+      font-weight: 600;
+    }
+    .proof-cell .p-detail {
+      font-size: 0.8rem;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-top: 4px;
+    }
+
+    /* =========================================================
+       INDUSTRIES
+    ========================================================= */
+    #industries { background: var(--ink); }
+
+    .industry-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 56px;
+    }
+
+    .industry-card {
+      background: var(--ink-2);
+      border: 1px solid var(--rule-mid);
+      border-radius: var(--radius-md);
+      padding: 28px 28px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      transition: border-color 0.25s, background 0.25s;
+    }
+    .industry-card:hover {
+      border-color: var(--sky-border);
+      background: rgba(185,217,235,0.03);
+    }
+
+    .industry-card i {
+      font-size: 1.5rem;
+      color: var(--sky);
+    }
+    .industry-card h4 {
+      font-size: 1rem;
+      font-weight: 700;
+    }
+    .industry-card p {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.7;
+      flex: 1;
+    }
+    .industry-card .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .mini-tag {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      color: var(--sky);
+      background: var(--sky-dim);
+      border: 1px solid var(--sky-border);
+      padding: 3px 8px;
+      border-radius: 3px;
+    }
+
+    /* =========================================================
+       CONTACT
+    ========================================================= */
+    #contact {
+      background: var(--ink-2);
+      border-top: 1px solid var(--rule);
+    }
+
+    .contact-inner {
+      display: grid;
+      grid-template-columns: 1fr 1.1fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    .contact-left h2 {
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      margin-bottom: 20px;
+    }
+    .contact-left p {
+      font-size: 0.95rem;
+      color: var(--muted);
+      line-height: 1.8;
+      margin-bottom: 36px;
+    }
+
+    .contact-detail-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 36px;
+    }
+    .contact-detail {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-size: 0.9rem;
+    }
+    .contact-detail .cd-icon {
+      width: 38px;
+      height: 38px;
+      background: var(--sky-dim);
+      border: 1px solid var(--sky-border);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      color: var(--sky);
+      flex-shrink: 0;
+    }
+    .contact-detail .cd-val { color: var(--soft); font-weight: 500; }
+    .contact-detail .cd-hint { font-size: 0.75rem; color: var(--muted); }
+
+    /* Form */
+    .contact-form {
+      background: var(--ink);
+      border: 1px solid var(--rule-mid);
+      border-radius: var(--radius-lg);
+      padding: 44px;
+    }
+
+    .contact-form h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 28px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .form-field {
+      margin-bottom: 20px;
+    }
+    .form-field label {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+    .form-field input,
+    .form-field select,
+    .form-field textarea {
+      width: 100%;
+      background: var(--ink-3);
+      border: 1px solid var(--rule-mid);
+      border-radius: var(--radius-sm);
+      padding: 12px 16px;
+      color: #fff;
+      font-family: var(--font-main);
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.2s;
+      -webkit-appearance: none;
+    }
+    .form-field input::placeholder,
+    .form-field textarea::placeholder { color: rgba(255,255,255,0.2); }
+    .form-field input:focus,
+    .form-field select:focus,
+    .form-field textarea:focus {
+      border-color: var(--sky);
+    }
+    .form-field select { cursor: pointer; }
+    .form-field select option { background: var(--ink-3); }
+    .form-field textarea { resize: vertical; min-height: 110px; }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+    .form-btn-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    .btn-whatsapp {
+      background: #25D366;
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.875rem;
+      padding: 13px;
+      border-radius: var(--radius-sm);
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: opacity 0.2s;
+      font-family: var(--font-main);
+    }
+    .btn-whatsapp:hover { opacity: 0.85; }
+
+    .btn-email {
+      background: var(--sky);
+      color: var(--ink);
+      font-weight: 700;
+      font-size: 0.875rem;
+      padding: 13px;
+      border-radius: var(--radius-sm);
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: opacity 0.2s;
+      font-family: var(--font-main);
+    }
+    .btn-email:hover { opacity: 0.85; }
+
+    /* =========================================================
+       FOOTER
+    ========================================================= */
+    footer {
+      background: var(--ink);
+      border-top: 1px solid var(--rule);
+      padding: 40px 5%;
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .footer-logo {
+      font-family: 'Inter', sans-serif;
+      font-weight: 900;
+      font-size: 1.2rem;
+      letter-spacing: -1px;
+      color: #fff;
+    }
+    .footer-logo span { color: var(--sky); }
+
+    .footer-meta {
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 20px;
+    }
+    .footer-links a {
+      font-size: 0.8rem;
+      color: var(--muted);
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--sky); }
+
+    /* =========================================================
+       REVEAL ANIMATION
+    ========================================================= */
+    .reveal {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .reveal.in { opacity: 1; transform: none; }
+
+    /* =========================================================
+       RESPONSIVE
+    ========================================================= */
+    @media (max-width: 1024px) {
+      .services-header { flex-direction: column; align-items: flex-start; }
+      .process-grid { grid-template-columns: repeat(2, 1fr); }
+      .process-step:nth-child(2) { border-right: none; }
+      .process-step:nth-child(2)::after { display: none; }
+      .process-step:nth-child(3) { border-top: 1px solid var(--rule-mid); }
+      .process-step:nth-child(4) { border-top: 1px solid var(--rule-mid); }
+      .proof-grid { grid-template-columns: repeat(2, 1fr); }
+      .industry-grid { grid-template-columns: repeat(2, 1fr); }
+      .contact-inner { grid-template-columns: 1fr; gap: 48px; }
+    }
+
+    @media (max-width: 768px) {
+      section { padding: 72px 5%; }
+      .hero { padding: 72px 5% 64px; min-height: auto; }
+      .nav-links { display: none; }
+      .nav-toggle { display: flex; }
+      .trust-divider { display: none; }
+      .process-grid { grid-template-columns: 1fr; }
+      .process-step { border-right: none; border-bottom: 1px solid var(--rule-mid); }
+      .process-step:last-child { border-bottom: none; }
+      .process-step::after { display: none; }
+      .proof-grid { grid-template-columns: repeat(2, 1fr); }
+      .industry-grid { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+      .contact-form { padding: 28px 24px; }
+      .footer-inner { flex-direction: column; text-align: center; gap: 16px; }
+      .footer-links { justify-content: center; }
+      .hero-actions { flex-direction: column; }
+      .btn-primary, .btn-secondary { justify-content: center; }
+    }
+
+    @media (max-width: 480px) {
+      .proof-grid { grid-template-columns: 1fr; }
+      .proof-cell { padding: 32px 28px; }
+      .form-btn-row { grid-template-columns: 1fr; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+      .reveal { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="page-grid"></div>
+<div class="page-vignette"></div>
+
+<!-- NAV -->
+<nav class="site-nav" role="navigation">
+  <div class="nav-inner">
+    <a href="#" class="logo">LULIBO<span>CONSULT</span></a>
+
+    <ul class="nav-links">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#process">How It Works</a></li>
+      <li><a href="#industries">Who We Serve</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="#contact" class="nav-cta">Start a Project</a></li>
+    </ul>
+
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+      <i class="bi bi-list" id="navIcon"></i>
+    </button>
+  </div>
+</nav>
+
+<!-- Mobile menu -->
+<div class="mobile-menu" id="mobileMenu" role="dialog" aria-label="Mobile navigation">
+  <a href="#services" class="mobile-link">Services</a>
+  <a href="#process" class="mobile-link">How It Works</a>
+  <a href="#industries" class="mobile-link">Who We Serve</a>
+  <a href="#contact" class="mobile-link">Contact</a>
+  <a href="#contact" class="btn-primary mt-3">Start a Project</a>
+</div>
+
+<main>
+
+  <!-- ========= HERO ========= -->
+  <section class="hero" id="home">
+    <div class="hero-split">
+      <div class="hero-text-col">
+        <div class="hero-eyebrow">Web Systems &amp; Bookkeeping · South Africa</div>
+
+        <h1 class="hero-headline">
+          Your business,<br>
+          <span class="hl-underline">properly set up</span><br>
+          and <span class="hl-sky">properly seen.</span>
+        </h1>
+
+        <p class="hero-sub">
+          We give small businesses the digital presence and financial structure they need to grow with confidence — from a professional website in 48 hours to clean books come tax season.
+        </p>
+
+        <div class="hero-actions">
+          <a href="#services" class="btn-primary">
+            <i class="bi bi-grid-1x2"></i>
+            Explore Services
+          </a>
+          <a href="https://wa.me/27781701133" class="btn-secondary" target="_blank" rel="noopener">
+            <i class="bi bi-whatsapp"></i>
+            WhatsApp Us
+          </a>
+        </div>
+
+        <div class="trust-bar">
+          <div class="trust-item">
+            <span class="t-num">48h</span>
+            <span class="t-label">Website delivery</span>
+          </div>
+          <div class="trust-divider"></div>
+          <div class="trust-item">
+            <span class="t-num">R500</span>
+            <span class="t-label">Entry price</span>
+          </div>
+          <div class="trust-divider"></div>
+          <div class="trust-item">
+            <span class="t-num">4</span>
+            <span class="t-label">Services offered</span>
+          </div>
+          <div class="trust-divider"></div>
+          <div class="trust-item">
+            <span class="t-num">100%</span>
+            <span class="t-label">SA-focused</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-image-col">
+        <img src="https://images.pexels.com/photos/7792812/pexels-photo-7792812.jpeg"
+             alt="Professional consultant" class="hero-img-frame">
+      </div>
+    </div>
+  </section>
+
+  <!-- ========= SERVICES ========= -->
+  <section id="services">
+    <div class="services-header reveal">
+      <div>
+        <div class="section-label">Our Services</div>
+        <h2 class="section-heading">Everything a growing<br>business actually needs.</h2>
+      </div>
+      <p class="section-sub" style="margin-bottom:0;">
+        No bloated retainers. No confusing packages. Just the tools that move the needle —
+        priced for the businesses that need them most.
+      </p>
+    </div>
+
+    <div class="row g-4">
+
+      <!-- Card 1 -->
+      <div class="col-12 col-md-6 col-xl-3 reveal">
+        <div class="service-card">
+          <div class="service-icon"><i class="bi bi-window"></i></div>
+          <div class="service-price">
+            <span class="amount">R500</span>
+            <span class="suffix">once-off</span>
+          </div>
+          <h3>1-Page Digital Card</h3>
+          <p>A professional, mobile-friendly storefront that tells your story and gets you found — built and live within 48 hours.</p>
+          <ul class="step-list">
+            <li><span class="step-num">1</span>Brief call / WhatsApp consult</li>
+            <li><span class="step-num">2</span>Custom single-page website</li>
+            <li><span class="step-num">3</span>Free business email included</li>
+            <li><span class="step-num">4</span>Live within 48 hours</li>
+            <li><i class="bi bi-check2 step-check"></i>Google-ready &amp; mobile-first</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Card 2 — Featured -->
+      <div class="col-12 col-md-6 col-xl-3 reveal" style="transition-delay:0.08s;">
+        <div class="service-card featured">
+          <div class="featured-badge">Most Popular</div>
+          <div class="service-icon" style="background:rgba(226,201,126,0.1); border-color:rgba(226,201,126,0.3); color:var(--gold);"><i class="bi bi-rocket-takeoff"></i></div>
+          <div class="service-price">
+            <span class="amount" style="color:var(--gold);">R5,000</span>
+            <span class="suffix">bundle</span>
+          </div>
+          <h3>The Launcher Bundle</h3>
+          <p>From zero to registered, branded, and fully operational. A custom multi-page website plus everything else a legitimate business needs — one package, one price.</p>
+          <ul class="step-list">
+            <li><span class="step-num" style="color:var(--gold);background:rgba(226,201,126,0.1);border-color:rgba(226,201,126,0.3);">1</span>CIPC registration handled</li>
+            <li><span class="step-num" style="color:var(--gold);background:rgba(226,201,126,0.1);border-color:rgba(226,201,126,0.3);">2</span>Multi-page website built &amp; designed</li>
+            <li><span class="step-num" style="color:var(--gold);background:rgba(226,201,126,0.1);border-color:rgba(226,201,126,0.3);">3</span>Professional email set up</li>
+            <li><span class="step-num" style="color:var(--gold);background:rgba(226,201,126,0.1);border-color:rgba(226,201,126,0.3);">4</span>First month bookkeeping</li>
+            <li><i class="bi bi-check2 step-check" style="color:var(--gold);"></i>Home · About · Services · Contact &amp; more</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="col-12 col-md-6 col-xl-3 reveal" style="transition-delay:0.16s;">
+        <div class="service-card">
+          <div class="service-icon"><i class="bi bi-journal-check"></i></div>
+          <div class="service-price">
+            <span class="amount">Custom</span>
+            <span class="suffix">monthly</span>
+          </div>
+          <h3>Bookkeeping &amp; Payroll</h3>
+          <p>Clean books, on-time payroll, and SARS compliance you can count on. Because the quality of your decisions follows the quality of your records.</p>
+          <ul class="step-list">
+            <li><span class="step-num">1</span>Monthly record maintenance</li>
+            <li><span class="step-num">2</span>Payroll &amp; staff calculations</li>
+            <li><span class="step-num">3</span>SARS submissions handled</li>
+            <li><span class="step-num">4</span>Monthly financial reports</li>
+            <li><i class="bi bi-check2 step-check"></i>No surprises at year-end</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Card 4 — Hospitality with AI -->
+      <div class="col-12 col-md-6 col-xl-3 reveal" style="transition-delay:0.24s;">
+        <div class="service-card" style="border-color: rgba(139,92,246,0.3); background: linear-gradient(160deg, rgba(139,92,246,0.05) 0%, var(--ink) 60%);">
+          <div style="position:absolute; top:0; left:0; right:0; height:2px; background: linear-gradient(90deg, #8B5CF6, var(--sky)); border-radius:2px 2px 0 0;"></div>
+          <div class="service-icon" style="background:rgba(139,92,246,0.12); border-color:rgba(139,92,246,0.3); color:#A78BFA;"><i class="bi bi-house-door"></i></div>
+
+          <!-- AI badge -->
+          <div style="display:inline-flex; align-items:center; gap:6px; background:rgba(139,92,246,0.15); border:1px solid rgba(139,92,246,0.35); border-radius:4px; padding:4px 10px; margin-bottom:14px;">
+            <i class="bi bi-cpu" style="color:#A78BFA; font-size:0.75rem;"></i>
+            <span style="font-family:var(--font-mono); font-size:0.62rem; font-weight:500; letter-spacing:0.12em; text-transform:uppercase; color:#A78BFA;">AI-Powered</span>
+          </div>
+
+          <div class="service-price">
+            <span class="amount">Custom</span>
+            <span class="suffix">setup</span>
+          </div>
+          <h3>Hospitality Systems</h3>
+          <p>Airbnb, guesthouses, and B&amp;Bs — fully set up, optimised, and running on smart AI automations that handle the work while you sleep.</p>
+          <ul class="step-list">
+            <li><span class="step-num" style="color:#A78BFA; background:rgba(139,92,246,0.12); border-color:rgba(139,92,246,0.3);">1</span>Airbnb / TripAdvisor listing setup</li>
+            <li><span class="step-num" style="color:#A78BFA; background:rgba(139,92,246,0.12); border-color:rgba(139,92,246,0.3);">2</span>AI auto-messaging for guests</li>
+            <li><span class="step-num" style="color:#A78BFA; background:rgba(139,92,246,0.12); border-color:rgba(139,92,246,0.3);">3</span>Smart pricing &amp; availability rules</li>
+            <li><span class="step-num" style="color:#A78BFA; background:rgba(139,92,246,0.12); border-color:rgba(139,92,246,0.3);">4</span>Automated check-in &amp; review flows</li>
+            <li><i class="bi bi-check2 step-check" style="color:#A78BFA;"></i>More 5-star reviews, less manual work</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========= HOW IT WORKS ========= -->
+  <section id="process">
+    <div class="reveal">
+      <div class="section-label">The Process</div>
+      <h2 class="section-heading">Simple from day one.</h2>
+      <p class="section-sub">No jargon. No waiting weeks for a quote. We move fast and keep you informed at every step.</p>
+    </div>
+
+    <div class="process-grid reveal" style="transition-delay:0.1s;">
+      <div class="process-step">
+        <div class="p-num">Step 01</div>
+        <div class="process-icon"><i class="bi bi-chat-dots"></i></div>
+        <h4>Tell us what you need</h4>
+        <p>WhatsApp us or fill in the contact form. No long meetings — a quick chat is enough to get started.</p>
+      </div>
+      <div class="process-step">
+        <div class="p-num">Step 02</div>
+        <div class="process-icon"><i class="bi bi-file-earmark-check"></i></div>
+        <h4>We send a clear quote</h4>
+        <p>You get a simple, honest quote — no hidden costs, no confusing line items. You approve, we go.</p>
+      </div>
+      <div class="process-step">
+        <div class="p-num">Step 03</div>
+        <div class="process-icon"><i class="bi bi-tools"></i></div>
+        <h4>We build and deliver</h4>
+        <p>Our team gets to work. Websites in 48 hours. Ongoing services kick off from month one. No delays.</p>
+      </div>
+      <div class="process-step">
+        <div class="p-num">Step 04</div>
+        <div class="process-icon"><i class="bi bi-graph-up-arrow"></i></div>
+        <h4>You grow with confidence</h4>
+        <p>With a professional presence and clean financial records, you can focus on running — and growing — your business.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========= SOCIAL PROOF ========= -->
+  <section id="social-proof">
+    <div class="proof-grid reveal">
+      <div class="proof-cell">
+        <span class="p-stat">48h</span>
+        <span class="p-label">Average website turnaround</span>
+        <span class="p-detail">From your first message to a live, professional site.</span>
+      </div>
+      <div class="proof-cell">
+        <span class="p-stat">R0</span>
+        <span class="p-label">Hidden fees, ever</span>
+        <span class="p-detail">The price we quote is the price you pay. Full stop.</span>
+      </div>
+      <div class="proof-cell">
+        <span class="p-stat">SARS</span>
+        <span class="p-label">Compliant record-keeping</span>
+        <span class="p-detail">We know what SARS expects and we keep your books audit-ready.</span>
+      </div>
+      <div class="proof-cell">
+        <span class="p-stat">7 days</span>
+        <span class="p-label">Response guarantee</span>
+        <span class="p-detail">We don't ghost clients. Every inquiry gets a response within 24 hours.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========= WHO WE SERVE ========= -->
+  <section id="industries">
+    <div class="reveal">
+      <div class="section-label">Who We Serve</div>
+      <h2 class="section-heading">Built for South African small business.</h2>
+      <p class="section-sub">Whether you're a one-person operation or a growing team, we meet you where you are.</p>
+    </div>
+
+    <div class="industry-grid">
+      <div class="industry-card reveal">
+        <i class="bi bi-shop"></i>
+        <h4>Retail &amp; Spaza Shops</h4>
+        <p>Get a digital presence that helps customers find you, trust you, and come back. Simple, fast, affordable.</p>
+        <div class="tag-row">
+          <span class="mini-tag">Website</span>
+          <span class="mini-tag">Email</span>
+          <span class="mini-tag">Bookkeeping</span>
+        </div>
+      </div>
+
+      <div class="industry-card reveal" style="transition-delay:0.08s; border-color: rgba(139,92,246,0.25);">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <i class="bi bi-house-door" style="color:#A78BFA;"></i>
+          <span style="font-family:var(--font-mono); font-size:0.62rem; letter-spacing:0.12em; text-transform:uppercase; color:#A78BFA; background:rgba(139,92,246,0.12); border:1px solid rgba(139,92,246,0.3); padding:2px 8px; border-radius:3px;">AI-Powered</span>
+        </div>
+        <h4>Guesthouses &amp; Airbnbs</h4>
+        <p>More bookings, better reviews, less admin. We set up your listing, write your copy, and deploy AI automations that message guests, trigger check-in flows, and request reviews — automatically.</p>
+        <div class="tag-row">
+          <span class="mini-tag" style="color:#A78BFA; background:rgba(139,92,246,0.1); border-color:rgba(139,92,246,0.3);">AI Automations</span>
+          <span class="mini-tag" style="color:#A78BFA; background:rgba(139,92,246,0.1); border-color:rgba(139,92,246,0.3);">Airbnb Setup</span>
+          <span class="mini-tag">Listing Optimisation</span>
+        </div>
+      </div>
+
+      <div class="industry-card reveal" style="transition-delay:0.16s;">
+        <i class="bi bi-person-workspace"></i>
+        <h4>Freelancers &amp; Consultants</h4>
+        <p>Look credible before the first meeting. A professional site and a branded email make all the difference.</p>
+        <div class="tag-row">
+          <span class="mini-tag">Digital Card</span>
+          <span class="mini-tag">Email</span>
+        </div>
+      </div>
+
+      <div class="industry-card reveal" style="transition-delay:0.08s;">
+        <i class="bi bi-building"></i>
+        <h4>Startups &amp; New Registrations</h4>
+        <p>Going from idea to registered business? The Launcher Bundle covers CIPC, your site, email, and your first books.</p>
+        <div class="tag-row">
+          <span class="mini-tag">CIPC</span>
+          <span class="mini-tag">Launcher Bundle</span>
+        </div>
+      </div>
+
+      <div class="industry-card reveal" style="transition-delay:0.16s;">
+        <i class="bi bi-scissors"></i>
+        <h4>Salons, Spas &amp; Trade Services</h4>
+        <p>Trade services need trust. A clean web presence and proper financials build the reputation that keeps clients coming back.</p>
+        <div class="tag-row">
+          <span class="mini-tag">Website</span>
+          <span class="mini-tag">Payroll</span>
+        </div>
+      </div>
+
+      <div class="industry-card reveal" style="transition-delay:0.24s;">
+        <i class="bi bi-bag-heart"></i>
+        <h4>Food, Catering &amp; Events</h4>
+        <p>Bookings, menus, and financial records — we help food and events businesses look as good as they taste.</p>
+        <div class="tag-row">
+          <span class="mini-tag">Website</span>
+          <span class="mini-tag">Records</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========= CONTACT ========= -->
+  <section id="contact">
+    <div class="contact-inner">
+
+      <div class="contact-left reveal">
+        <div class="section-label">Get In Touch</div>
+        <h2>Let's get you<br><span style="color:var(--sky);">properly started.</span></h2>
+        <p>
+          Fill in the form and we'll come back to you within 24 hours.
+          Prefer to talk now? WhatsApp us directly — we're quick to respond.
+        </p>
+
+        <div class="contact-detail-list">
+          <div class="contact-detail">
+            <div class="cd-icon"><i class="bi bi-whatsapp"></i></div>
+            <div>
+              <div class="cd-val">+27 78 170 1133</div>
+              <div class="cd-hint">WhatsApp preferred · usually responds same day</div>
+            </div>
+          </div>
+          <div class="contact-detail">
+            <div class="cd-icon"><i class="bi bi-clock"></i></div>
+            <div>
+              <div class="cd-val">Mon – Fri, 8:00 – 18:00</div>
+              <div class="cd-hint">South Africa Standard Time (SAST)</div>
+            </div>
+          </div>
+          <div class="contact-detail">
+            <div class="cd-icon"><i class="bi bi-lightning-charge"></i></div>
+            <div>
+              <div class="cd-val">Websites live in 48 hours</div>
+              <div class="cd-hint">From quote approval to going live</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Reassurance points -->
+        <div style="background:var(--sky-dim); border:1px solid var(--sky-border); border-radius:var(--radius-md); padding:20px 24px;">
+          <p style="font-size:0.8rem; color:var(--soft); margin:0; line-height:1.9;">
+            <i class="bi bi-shield-check" style="color:var(--sky); margin-right:8px;"></i>No deposit required before you see a draft.<br>
+            <i class="bi bi-shield-check" style="color:var(--sky); margin-right:8px;"></i>No confusing contracts — plain language only.<br>
+            <i class="bi bi-shield-check" style="color:var(--sky); margin-right:8px;"></i>You own everything we build for you.
+          </p>
+        </div>
+      </div>
+
+      <div class="contact-form reveal" style="transition-delay:0.12s;">
+        <h3>Send us a message</h3>
+
+        <form id="contactForm" action="https://api.web3forms.com/submit" method="POST">
+          <input type="hidden" name="access_key" value="5d7eb873-a0ec-42ec-99d8-22a65e9eb4c2">
+
+          <div class="form-row">
+            <div class="form-field">
+              <label>Your Name</label>
+              <input type="text" name="name" id="fname" placeholder="Sipho Dlamini" required>
+            </div>
+            <div class="form-field">
+              <label>Business Name</label>
+              <input type="text" name="business" placeholder="Optional">
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label>Contact Number / Email</label>
+            <input type="text" name="contact" id="contact" placeholder="+27 81 000 0000 or email@example.com" required>
+          </div>
+
+          <div class="form-field">
+            <label>I'm Interested In</label>
+            <select name="interest" id="interest" required>
+              <option value="" disabled selected>Select a service…</option>
+              <option>1-Page Digital Card (R500)</option>
+              <option>The Launcher Bundle — Multi-page Website (R5,000)</option>
+              <option>Bookkeeping &amp; Payroll (Monthly)</option>
+              <option>Hospitality Systems + AI Automations</option>
+              <option>Not sure — help me choose</option>
+            </select>
+          </div>
+
+          <div class="form-field">
+            <label>Tell Us More</label>
+            <textarea name="message" id="message" placeholder="What does your business do? What's your main goal right now?" required></textarea>
+          </div>
+
+          <div class="form-btn-row">
+            <button type="button" class="btn-whatsapp" onclick="sendToWhatsApp()">
+              <i class="bi bi-whatsapp"></i> Send via WhatsApp
+            </button>
+            <button type="submit" class="btn-email">
+              <i class="bi bi-send"></i> Send via Email
+            </button>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <span class="footer-logo">LULIBO<span>CONSULT</span></span>
+    <span class="footer-meta">© 2026 Lulibo Consult · Professional Web &amp; Financial Services · South Africa</span>
+    <div class="footer-links">
+      <a href="#services">Services</a>
+      <a href="#contact">Contact</a>
+      <a href="https://wa.me/27781701133" target="_blank" rel="noopener">WhatsApp</a>
+    </div>
+  </div>
+</footer>
+
+<!-- Bootstrap 5 JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+  /* --- Mobile nav --- */
+  const navToggle  = document.getElementById('navToggle');
+  const mobileMenu = document.getElementById('mobileMenu');
+  const navIcon    = document.getElementById('navIcon');
+
+  navToggle.addEventListener('click', () => {
+    const open = mobileMenu.classList.toggle('open');
+    navIcon.className = open ? 'bi bi-x-lg' : 'bi bi-list';
+    navToggle.setAttribute('aria-expanded', open);
+  });
+
+  document.querySelectorAll('.mobile-link, .mobile-menu .btn-primary').forEach(link => {
+    link.addEventListener('click', () => {
+      mobileMenu.classList.remove('open');
+      navIcon.className = 'bi bi-list';
+      navToggle.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  /* --- Scroll reveal --- */
+  const ro = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); ro.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+
+  /* --- WhatsApp send --- */
+  function sendToWhatsApp() {
+    const name     = document.getElementById('fname').value.trim();
+    const contact  = document.getElementById('contact').value.trim();
+    const interest = document.getElementById('interest').value;
+    const message  = document.getElementById('message').value.trim();
+
+    if (!name || !contact || !interest || !message) {
+      alert('Please fill in all required fields before sending via WhatsApp.');
+      return;
+    }
+
+    const text = encodeURIComponent(
+      `*Lulibo Consult Inquiry*\n\n` +
+      `*Name:* ${name}\n` +
+      `*Contact:* ${contact}\n` +
+      `*Service:* ${interest}\n` +
+      `*Message:* ${message}`
+    );
+
+    window.open(`https://wa.me/27781701133?text=${text}`, '_blank');
+  }
+</script>
+
+</body>
+</html>
