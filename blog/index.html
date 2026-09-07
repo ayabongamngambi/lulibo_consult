@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lulibo Consult | Smart Web Systems &amp; Bookkeeping</title>
+  <meta name="description" content="Professional web design and financial record upkeep for modern businesses. From R500 sites with custom emails to hospitality systems. Based in South Africa.">
+  <meta name="keywords" content="Website Design, Financial Records, Bookkeeping, SARS, CIPC, Hospitality Systems, Lulibo Consult, South Africa, AI automation, bots, Lulibo">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://googleapis.com">
+  <link rel="preconnect" href="https://gstatic.com" crossorigin>
+  <link href="https://googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&family=Inter:wght@900&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://jsdelivr.net" rel="stylesheet">
+
+  <!-- Bootstrap Icons -->
+  <link href="https://jsdelivr.net" rel="stylesheet">
+
+  <!-- Markdown Parser -->
+  <script src="https://jsdelivr.net"></script>
+
+  <style>
+    :root {
+      --ink:        #0A0F1E;
+      --ink-2:      #111827;
+      --ink-3:      #1E2535;
+      --rule:       rgba(255,255,255,0.07);
+      --rule-mid:   rgba(255,255,255,0.12);
+      --rule-light: rgba(255,255,255,0.22);
+      --sky:        #B9D9EB;
+      --sky-dim:    rgba(185,217,235,0.12);
+      --sky-border: rgba(185,217,235,0.28);
+      --gold:       #E2C97E;
+      --gold-dim:   rgba(226,201,126,0.1);
+      --muted:      rgba(255,255,255,0.42);
+      --soft:       rgba(255,255,255,0.7);
+      --font-main:  'Plus Jakarta Sans', sans-serif;
+      --font-mono:  'DM Mono', monospace;
+      --radius-sm:  6px;
+      --radius-md:  12px;
+      --radius-lg:  20px;
+    }
+
+    body {
+      font-family: var(--font-main);
+      background: var(--ink);
+      color: #fff;
+      overflow-x: hidden;
+      line-height: 1.65;
+    }
+
+    .page-grid {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      background-image:
+        linear-gradient(var(--rule) 1px, transparent 1px),
+        linear-gradient(90deg, var(--rule) 1px, transparent 1px);
+      background-size: 64px 64px;
+      pointer-events: none;
+    }
+
+    .site-nav {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(10,15,30,0.85);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--rule);
+      padding: 0 5%;
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 68px;
+    }
+
+    .logo {
+      font-family: 'Inter', sans-serif;
+      font-weight: 900;
+      font-size: 1.5rem;
+      letter-spacing: -1px;
+      color: #fff;
+    }
+    .logo span { color: var(--sky); }
+
+    .blog-card {
+      background: var(--ink-2);
+      border: 1px solid var(--rule);
+      border-radius: var(--radius-md);
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .blog-card:hover {
+      border-color: var(--rule-light);
+      transform: translateY(-2px);
+    }
+
+    /* Target compiled Markdown tags to inherit your style tokens */
+    .markdown-body h1, .markdown-body h2, .markdown-body h3 { color: var(--sky); margin-top: 1.5rem; margin-bottom: 1rem; font-weight: 700; }
+    .markdown-body p { color: var(--soft); margin-bottom: 1.25rem; }
+    .markdown-body code { font-family: var(--font-mono); color: var(--gold); background: var(--ink-3); padding: 2px 6px; border-radius: var(--radius-sm); }
+  </style>
+</head>
+<body>
+
+  <div class="page-grid"></div>
+
+  <!-- Identical Layout Navigation Header -->
+  <nav class="site-nav">
+    <div class="nav-inner">
+      <a href="/index.html" class="logo">Lulibo Consult<span>.</span></a>
+      <a href="/index.html" style="color: var(--soft); font-size: 0.875rem; font-weight: 500;">← Back</a>
+    </div>
+  </nav>
+
+  <!-- Layout Container for Articles -->
+  <div class="container my-5" style="max-width: 800px; position: relative; z-index: 1;">
+    <div id="blog-content">
+      
+      <h1 class="display-6 fw-bold mb-4" style="color: var(--sky);">Blog</h1>
+
+      <div class="d-flex flex-column gap-3">
+        <!-- POST CARD 1 (Update the string parameter and headers as needed) -->
+        <a href="?post=article-one" class="blog-card p-4 text-decoration-none d-block">
+          <h3 class="h5 fw-bold mb-2" style="color: #fff;">Article Title One</h3>
+          <p class="mb-0 small" style="color: var(--muted);">Click to read article</p>
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const postName = urlParams.get('post');
+    
+    if (postName) {
+        const contentDiv = document.getElementById('blog-content');
+        contentDiv.innerHTML = '<p style="color: var(--muted); font-family: var(--font-mono);">Loading...</p>';
+        
+        fetch(`${postName}.md`)
+            .then(response => {
+                if (!response.ok) throw new Error('File not found');
+                return response.text();
+            })
+            .then(markdownText => {
+                contentDiv.innerHTML = `
+                    <a href="index.html" class="btn btn-sm mb-4 px-3" style="background: var(--ink-3); color: var(--soft); border: 1px solid var(--rule); border-radius: var(--radius-sm);">← Back</a>
+                    <div class="markdown-body">${marked.parse(markdownText)}</div>
+                `;
+            })
+            .catch(err => {
+                contentDiv.innerHTML = `
+                    <a href="index.html" class="btn btn-sm btn-outline-secondary mb-4">← Back</a>
+                    <div class="alert alert-danger" style="background: rgba(220,53,69,0.1); border: 1px solid rgba(220,53,69,0.2); color: #ff8585;">
+                      Error loading article. Ensure <code>blog/${postName}.md</code> exists.
+                    </div>`;
+            });
+    }
+  </script>
+</body>
+</html>
